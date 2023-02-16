@@ -31,15 +31,14 @@ charListTop.append(charElement);
 function charInfo(characters) {
     el('image').src = characters.image;
     el('name').textContent = characters.name;
-    el('vote-count').textContent = characters.votes;
+    el('vote-count').textContent = parseInt(characters.votes);
+    console.log(characters.votes);
     const votesForm = el('votes-form');
     const votesInput = el('votes');
     el('votes-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      let enteredVotes = 0;
-      enteredVotes = parseInt(votesInput.value);
-      if (!isNaN(enteredVotes)) {
-        characters.votes += enteredVotes;
+      if (!isNaN(votesInput.value)) {
+        characters.votes += parseInt(votesInput.value);
         el('vote-count').textContent = characters.votes;
         votesInput.value ='';
       }
