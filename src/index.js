@@ -37,7 +37,7 @@ function charInfo(characters) {
     const votesInput = el('votes');
     el('votes-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!isNaN(votesInput.value)) {
+      if (!isNaN(parseInt(votesInput.value)) ){
         characters.votes += parseInt(votesInput.value);
         el('vote-count').textContent = characters.votes;
         votesInput.value ='';
