@@ -1,46 +1,49 @@
-// Your code here
-const charApi = 'http://localhost:3000/characters'
+
+const charApi = 'http://localhost:3000/characters';
 const firstCharApi = 'http://localhost:3000/characters/1';
-function el (id) {
-return document.getElementById(id);
+
+function el(id) {
+  return document.getElementById(id);
 }
+
 const charListTop = el('character-bar');
+let selectedCharacter;
 
 fetch(firstCharApi)
-.then(res => res.json())
-.then(char => charInfo(char));
-
+  .then(res => res.json())
+  .then(char => charInfo(char));
 
 fetch(charApi)
-.then(res => res.json())
-.then(char => renderList(char));
-
+  .then(res => res.json())
+  .then(char => renderList(char));
 
 function renderList(char) {
-    char.forEach(displayList);
+  char.forEach(displayList);
 }
 
-
-function displayList(characters) {
-const charElement = document.createElement('span');
-charElement.textContent = characters.name;
-charElement.addEventListener('click', () => charInfo(characters))
-charListTop.append(charElement);
+function displayList(character) {
+  const charElement = document.createElement('span');
+  charElement.textContent = character.name;
+  charElement.addEventListener('click', () => {
+    selectedCharacter = character;
+    charInfo(selectedCharacter);
+  });
+  charListTop.append(charElement);
 }
 
-function charInfo(characters) {
-    el('image').src = characters.image;
-    el('name').textContent = characters.name;
-    el('vote-count').textContent = parseInt(characters.votes);
-    console.log(characters.votes);
-    const votesForm = el('votes-form');
-    const votesInput = el('votes');
-    el('votes-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!isNaN(parseInt(votesInput.value)) ){
-        characters.votes += parseInt(votesInput.value);
-        el('vote-count').textContent = characters.votes;
-        votesInput.value ='';
-      }
-    });
+function charInfo(character) {
+  el('image').src = character.image;
+  el('name').textContent = character.name;
+  el('vote-count').textContent = parseInt(character.votes);
+}
+
+const votesForm = el('votes-form');
+const votesInput = el('votes');
+votesForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (selectedCharacter && !isNaN(parseInt(votesInput.value))) {
+    selectedCharacter.votes += parseInt(votesInput.value);
+    el('vote-count').textContent = selectedCharacter.votes;
+    votesInput.value = '';
   }
+});
